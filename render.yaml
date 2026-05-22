@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: social-tools
+    env: docker
+    plan: starter
+    autoDeploy: false
+    healthCheckPath: /health
+    disk:
+      name: social-tools-data
+      mountPath: /var/data
+      sizeGB: 2
+    envVars:
+      - key: SOCIAL_TOOLS_DATA_DIR
+        value: /var/data/social-tools
+      - key: INSTAGRAM_REQUEST_TIMEOUT
+        value: "18"
+      - key: INSTAGRAM_CACHE_TTL
+        value: "86400"
+      - key: TIKTOK_CACHE_TTL
+        value: "86400"

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Social Tools</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='site.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/">
+      <span class="brand-mark">ST</span>
+      <span>Social Tools</span>
+    </a>
+    <nav class="top-nav" aria-label="Tools">
+      {% for tool in tools %}
+      <a href="{{ tool.path }}">{{ tool.platform }} {{ tool.title.split()[0] }}</a>
+      {% endfor %}
+    </nav>
+  </header>
+
+  <main class="home-shell">
+    <section class="intro">
+      <p class="eyebrow">All tools in one website</p>
+      <h1>Choose the social media tool you need.</h1>
+      <p>Open each tool in its own clean page, with upload, search, export, and download workflows kept separate.</p>
+    </section>
+
+    <section class="tool-grid" aria-label="Available tools">
+      {% for tool in tools %}
+      <a class="tool-card {{ tool.class }}" href="{{ tool.path }}">
+        <span class="tool-icon">{{ tool.icon }}</span>
+        <span class="tool-label">{{ tool.platform }}</span>
+        <strong>{{ tool.title }}</strong>
+        <span>{{ tool.description }}</span>
+      </a>
+      {% endfor %}
+    </section>
+  </main>
+</body>
+</html>
