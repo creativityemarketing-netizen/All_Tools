@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.git/
+.venv/
+venv/
+env/
+runtime/
+runtime-test/
+date-finder-bluehost-php/
+*.zip
+tools/**/cache/
+tools/tiktok/downloads/*
+tools/instagram_words/sessions/*
+tools/instagram_date/uploads/*

@@ -51,7 +51,7 @@ app.mount("/tools/tiktok", tiktok_app, name="tiktok")
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    return templates.TemplateResponse("home.html", {"request": request, "tools": TOOLS})
+    return templates.TemplateResponse(request, "home.html", {"tools": TOOLS})
 
 
 @app.get("/health")

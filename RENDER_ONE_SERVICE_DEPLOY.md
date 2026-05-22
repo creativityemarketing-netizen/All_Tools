@@ -216,6 +216,66 @@ TikTok Extract:
 - Export CSV/JSON
 - Download selected videos if TikTok allows it
 
+## If Render Shows Internal Server Error
+
+First test the health endpoint:
+
+```text
+https://YOUR-RENDER-URL.onrender.com/health
+```
+
+If `/health` does not return:
+
+```json
+{"ok":true,"tools":3}
+```
+
+then the app is failing during startup.
+
+Open Render:
+
+1. Go to your web service.
+2. Open `Logs`.
+3. Click `Live tail`.
+4. Refresh the failing page.
+5. Copy the first Python traceback/error shown in the logs.
+
+Common causes:
+
+- `tools/storage.py` was not uploaded to GitHub.
+- The repo is missing one of these folders: `tools/`, `templates/`, `static/`.
+- The service is not using Docker.
+- The start command was changed manually.
+- The persistent disk/env variable was not configured correctly.
+
+Expected Render settings:
+
+```text
+Environment: Docker
+Health Check Path: /health
+Dockerfile Path: ./Dockerfile
+```
+
+Expected environment variables:
+
+```text
+SOCIAL_TOOLS_DATA_DIR=/var/data/social-tools
+INSTAGRAM_REQUEST_TIMEOUT=18
+INSTAGRAM_CACHE_TTL=86400
+TIKTOK_CACHE_TTL=86400
+```
+
+If only one tool fails, test each route:
+
+```text
+/tools/instagram-date/
+/tools/instagram-date/api/stats
+/tools/instagram-words/
+/tools/tiktok/
+```
+
+The exact route that returns `500` tells us which tool is causing the issue.
+
 ## Important Limits
 
 Render solves the Python hosting problem, but Instagram/TikTok can still limit scraping.
