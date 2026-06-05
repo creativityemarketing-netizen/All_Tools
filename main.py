@@ -9,11 +9,12 @@ from starlette.middleware.wsgi import WSGIMiddleware
 from tools.instagram_date.app import app as instagram_date_app
 from tools.instagram_words.app import app as instagram_words_app
 from tools.tiktok.app import app as tiktok_app
+from tools.video_transcription.app import app as video_transcription_app
 
 
 BASE_DIR = Path(__file__).parent
 
-app = FastAPI(title="Social Tools")
+app = FastAPI(title="Creativity Solutions")
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
 TOOLS = [
@@ -26,20 +27,12 @@ TOOLS = [
         "class": "instagram",
     },
     {
-        "path": "/tools/instagram-words/",
-        "platform": "Instagram",
-        "title": "Words Finder",
-        "description": "Find words inside captions from profile posts and reels, then export results.",
-        "icon": "W",
-        "class": "words",
-    },
-    {
-        "path": "/tools/tiktok/",
-        "platform": "TikTok",
-        "title": "Extract & Downloader",
-        "description": "Fetch video metadata, filter account videos, export data, or download selected files.",
-        "icon": "T",
-        "class": "tiktok",
+        "path": "/tools/video-transcription/",
+        "platform": "Audio & Video",
+        "title": "Video Transcription",
+        "description": "Turn video or audio links and uploaded files into editable transcripts.",
+        "icon": "V",
+        "class": "video",
     },
 ]
 
@@ -47,6 +40,7 @@ app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="stat
 app.mount("/tools/instagram-date", WSGIMiddleware(instagram_date_app), name="instagram_date")
 app.mount("/tools/instagram-words", WSGIMiddleware(instagram_words_app), name="instagram_words")
 app.mount("/tools/tiktok", tiktok_app, name="tiktok")
+app.mount("/tools/video-transcription", video_transcription_app, name="video_transcription")
 
 
 @app.get("/", response_class=HTMLResponse)

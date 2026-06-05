@@ -202,18 +202,26 @@
       display: flex; justify-content: space-between; align-items: center;
       gap: 16px; margin: -18px 0 26px; color: #fff;
     }
-    .suite-nav a {
+    .suite-brand {
+      display: inline-flex; align-items: center; gap: 10px;
       color: #fff; text-decoration: none; font-weight: 800;
-      background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.32);
-      padding: 8px 12px; border-radius: 8px;
     }
-    .suite-nav span { font-weight: 800; }
+    .suite-brand-mark {
+      width: 38px; height: 38px; display: inline-grid; place-items: center;
+      border-radius: 8px; background: #e5322d; color: #fff;
+      font-size: 14px; font-weight: 900;
+      box-shadow: 0 8px 22px rgba(0,0,0,.15);
+    }
+    .suite-nav span { font-weight: 800; text-align: right; }
   </style>
 </head>
 <body>
 
   <nav class="suite-nav" aria-label="Site navigation">
-    <a href="/">Social Tools</a>
+    <a class="suite-brand" href="/" aria-label="Creativity Solutions home">
+      <span class="suite-brand-mark">CS</span>
+      <span>Creativity Solutions</span>
+    </a>
     <span>Instagram Date Finder</span>
   </nav>
 

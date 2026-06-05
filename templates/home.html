@@ -3,38 +3,47 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Social Tools</title>
+  <title>Creativity Solutions</title>
   <link rel="stylesheet" href="{{ url_for('static', path='site.css') }}">
 </head>
 <body>
   <header class="site-header">
     <a class="brand" href="/">
-      <span class="brand-mark">ST</span>
-      <span>Social Tools</span>
+      <span class="brand-mark">CS</span>
+      <span>Creativity Solutions</span>
     </a>
     <nav class="top-nav" aria-label="Tools">
       {% for tool in tools %}
-      <a href="{{ tool.path }}">{{ tool.platform }} {{ tool.title.split()[0] }}</a>
+      <a href="{{ tool.path }}">{{ tool.title }}</a>
       {% endfor %}
     </nav>
   </header>
 
   <main class="home-shell">
-    <section class="intro">
-      <p class="eyebrow">All tools in one website</p>
-      <h1>Choose the social media tool you need.</h1>
-      <p>Open each tool in its own clean page, with upload, search, export, and download workflows kept separate.</p>
+    <section class="hero">
+      <p class="eyebrow">Online solution center</p>
+      <h1>Every social media tool in one place</h1>
+      <p>Choose a solution, open the tool, and finish the task in its own focused workspace.</p>
     </section>
 
-    <section class="tool-grid" aria-label="Available tools">
+    <section class="tool-grid" aria-label="Solutions">
       {% for tool in tools %}
       <a class="tool-card {{ tool.class }}" href="{{ tool.path }}">
-        <span class="tool-icon">{{ tool.icon }}</span>
-        <span class="tool-label">{{ tool.platform }}</span>
-        <strong>{{ tool.title }}</strong>
-        <span>{{ tool.description }}</span>
+        <span class="tool-icon" aria-hidden="true">{{ tool.icon }}</span>
+        <span class="tool-content">
+          <span class="tool-label">{{ tool.platform }}</span>
+          <strong>{{ tool.title }}</strong>
+          <span>{{ tool.description }}</span>
+        </span>
       </a>
       {% endfor %}
+    </section>
+
+    <section class="next-solutions" aria-label="More solutions">
+      <div>
+        <strong>More tools can be added here.</strong>
+        <span>Send the next solution name, page, or files and it will become another card on this homepage.</span>
+      </div>
     </section>
   </main>
 </body>
