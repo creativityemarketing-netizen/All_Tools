@@ -292,6 +292,15 @@ function updateTranscript(payload, sourceLabel) {
   statusEl.textContent = "Complete";
 }
 
+async function readResponsePayload(response) {
+  const contentType = response.headers.get("content-type") || "";
+  if (contentType.includes("application/json")) {
+    return response.json();
+  }
+  const text = await response.text();
+  return { detail: text || `Request failed with status ${response.status}` };
+}
+
 async function generateTranscript(event) {
   event.preventDefault();
   if (!input.value.trim()) return;
@@ -310,7 +319,7 @@ async function generateTranscript(event) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url })
     });
-    const infoPayload = await infoResponse.json();
+    const infoPayload = await readResponsePayload(infoResponse);
     if (!infoResponse.ok) throw new Error(infoPayload.error || infoPayload.detail || "Preview failed.");
 
     updateMediaInfo(infoPayload.info);
@@ -324,7 +333,7 @@ async function generateTranscript(event) {
       headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ url, language: language.value, speed: "accurate", diarize: speakerSeparation.checked })
     });
-    const payload = await response.json();
+    const payload = await readResponsePayload(response);
     if (!response.ok) throw new Error(payload.error || payload.detail || "Transcription failed.");
 
     updateMediaInfo(payload.info || infoPayload.info);
@@ -383,7 +392,7 @@ async function generateUploadTranscript() {
       method: "POST",
       body
     });
-    const payload = await response.json();
+    const payload = await readResponsePayload(response);
     if (!response.ok) throw new Error(payload.error || payload.detail || "Transcription failed.");
 
     updateMediaInfo(payload.info);

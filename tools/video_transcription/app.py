@@ -13,7 +13,7 @@ from urllib.parse import quote
 
 import httpx
 from fastapi import FastAPI, File, HTTPException, Request, UploadFile
-from fastapi.responses import Response
+from fastapi.responses import JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 from tools.storage import tool_data_dir
@@ -40,6 +40,14 @@ LANGUAGE_CODES = {
     "Portuguese": "pt",
     "Spanish": "es",
 }
+
+
+@app.exception_handler(Exception)
+async def json_exception_handler(request: Request, exc: Exception):
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal server error. Check the Render logs for the full backend error."},
+    )
 
 
 def language_code(language: str | None) -> str | None:
@@ -264,11 +272,15 @@ async def transcribe_with_openai(file_path: Path, language: str | None, diarize:
             "model": os.getenv("DIARIZATION_MODEL" if diarize else "TRANSCRIPTION_MODEL", "gpt-4o-transcribe-diarize" if diarize else "gpt-4o-transcribe"),
             "response_format": "diarized_json" if diarize else "json",
         }
+        if diarize:
+            request["chunking_strategy"] = "auto"
         code = language_code(language)
         if code:
             request["language"] = code
         try:
             transcription = client.audio.transcriptions.create(**request)
+        except Exception as exc:
+            raise HTTPException(status_code=502, detail=f"OpenAI transcription failed: {exc}") from exc
         finally:
             request["file"].close()
         return {"text": getattr(transcription, "text", "") or "", "segments": format_segments(transcription), "diarized": diarize}
