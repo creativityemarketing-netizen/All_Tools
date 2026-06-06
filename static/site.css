@@ -449,6 +449,11 @@ body {
   max-width: 100%;
 }
 
+.pin-shot {
+  width: 317px;
+  max-width: 100%;
+}
+
 @media (max-width: 900px) {
   .feature-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
