@@ -213,32 +213,6 @@ body {
   line-height: 1.48;
 }
 
-.next-solutions {
-  margin-top: 26px;
-  padding: 20px 24px;
-  border: 1px dashed #cfd4dc;
-  border-radius: 8px;
-  background: #fff;
-  color: var(--muted);
-}
-
-.next-solutions div {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-}
-
-.next-solutions strong {
-  color: var(--text);
-  font-size: 17px;
-}
-
-.next-solutions span {
-  font-size: 15px;
-  line-height: 1.45;
-}
-
 @media (max-width: 960px) {
   .tool-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -271,11 +245,6 @@ body {
     padding: 20px;
   }
 
-  .next-solutions div {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 8px;
-  }
 }
 
 @media (max-width: 440px) {
