@@ -34,14 +34,6 @@ TOOLS = [
         "icon": "V",
         "class": "video",
     },
-    {
-        "path": "/tools/instagram-extension/",
-        "platform": "Chrome Extension",
-        "title": "Extension Instagram",
-        "description": "Install the Instagram scraper extension and learn what it can extract or download.",
-        "icon": "E",
-        "class": "extension",
-    },
 ]
 
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
