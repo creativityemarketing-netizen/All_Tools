@@ -379,21 +379,6 @@ body {
   color: var(--text);
 }
 
-.screenshot-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.screenshot-card {
-  display: grid;
-  gap: 12px;
-}
-
-.screenshot-wide {
-  grid-column: 1 / -1;
-}
-
 .real-screenshot {
   display: block;
   width: 100%;
@@ -404,166 +389,64 @@ body {
   box-shadow: 0 12px 28px rgba(16, 24, 40, 0.12);
 }
 
-.screenshot-compact .real-screenshot {
+.setup-flow {
+  display: grid;
+  gap: 18px;
+}
+
+.setup-step {
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fbfcff;
+}
+
+.setup-step-split {
+  grid-template-columns: 290px auto;
+  justify-content: start;
+}
+
+.step-copy {
+  min-width: 0;
+}
+
+.step-number {
+  width: 34px;
+  height: 34px;
+  display: inline-grid;
+  place-items: center;
+  margin-bottom: 12px;
+  border-radius: 999px;
+  background: #e5322d;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.step-copy h3 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.step-copy p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.step-copy strong {
+  color: var(--text);
+}
+
+.compact-shot,
+.menu-shot {
   width: auto;
   max-width: 100%;
-  justify-self: start;
-}
-
-.screenshot-card > strong {
-  font-size: 18px;
-}
-
-.screenshot-card p {
-  margin: -4px 0 0;
-  font-size: 14px;
-}
-
-.fake-window {
-  min-height: 210px;
-  padding: 18px;
-  border: 1px solid #cfd7e6;
-  border-radius: 8px;
-  background: #f8fafc;
-  box-shadow: inset 0 1px 0 #fff;
-}
-
-.fake-window-bar {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 22px;
-}
-
-.fake-window-bar span {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #cbd5e1;
-}
-
-.fake-download {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 16px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: #fff;
-}
-
-.zip-icon {
-  width: 52px;
-  height: 52px;
-  display: grid;
-  place-items: center;
-  border-radius: 8px;
-  background: #7c3aed;
-  color: #fff;
-  font-size: 13px;
-  font-weight: 900;
-}
-
-.fake-download div:last-child {
-  display: grid;
-  gap: 5px;
-}
-
-.fake-download span,
-.fake-row,
-.fake-folder,
-.fake-popup label {
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.fake-address {
-  margin-bottom: 22px;
-  padding: 12px 14px;
-  border: 1px solid #d6deeb;
-  border-radius: 999px;
-  background: #fff;
-  color: var(--text);
-  font-weight: 800;
-}
-
-.fake-row {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  align-items: center;
-  gap: 12px;
-  padding: 16px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: #fff;
-}
-
-.fake-row b {
-  color: var(--text);
-}
-
-.fake-row i {
-  padding: 5px 10px;
-  border-radius: 999px;
-  background: #dcfce7;
-  color: #166534;
-  font-style: normal;
-  font-weight: 900;
-}
-
-.fake-button-row {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 22px;
-}
-
-.fake-button-row button,
-.fake-popup button {
-  border: 0;
-  border-radius: 8px;
-  background: var(--red);
-  color: #fff;
-  padding: 10px 14px;
-  font-weight: 900;
-}
-
-.fake-folder {
-  padding: 24px;
-  border: 2px dashed #cfd7e6;
-  border-radius: 8px;
-  background: #fff;
-  text-align: center;
-}
-
-.fake-popup {
-  display: grid;
-  gap: 10px;
-  align-content: start;
-  background: #111827;
-}
-
-.popup-title {
-  color: #fff;
-  font-size: 18px;
-  font-weight: 900;
-}
-
-.fake-popup label {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  background: #fff;
-}
-
-.fake-popup label span {
-  color: var(--text);
-  font-weight: 800;
-}
-
-.fake-popup button {
-  background: #e5322d;
 }
 
 @media (max-width: 900px) {
@@ -577,8 +460,10 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .screenshot-grid {
+  .setup-step,
+  .setup-step-split {
     grid-template-columns: 1fr;
+    justify-content: stretch;
   }
 
   .extension-section {

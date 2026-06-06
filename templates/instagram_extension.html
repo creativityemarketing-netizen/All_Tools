@@ -78,47 +78,68 @@
 
     <section class="extension-section">
       <h2>Visual Setup Steps</h2>
-      <div class="screenshot-grid">
-        <article class="screenshot-card screenshot-wide">
+      <div class="setup-flow">
+        <article class="setup-step">
+          <div class="step-copy">
+            <span class="step-number">1</span>
+            <h3>Check Developer mode</h3>
+            <p>Open <strong>chrome://extensions</strong>. If Developer mode is inactive, the switch in the top-right corner is grey.</p>
+          </div>
           <img class="real-screenshot" src="/static/images/extension/developer-mode-off.png" alt="Chrome Extensions page with Developer mode inactive">
-          <strong>1. Check Developer mode</strong>
-          <p>Open <strong>chrome://extensions</strong>. If Developer mode is inactive, the switch in the top-right corner is grey.</p>
         </article>
 
-        <article class="screenshot-card screenshot-wide">
+        <article class="setup-step">
+          <div class="step-copy">
+            <span class="step-number">2</span>
+            <h3>Activate Developer mode</h3>
+            <p>Turn Developer mode on. When it is active, Chrome shows the <strong>Load unpacked</strong> button.</p>
+          </div>
           <img class="real-screenshot" src="/static/images/extension/developer-mode-on.png" alt="Chrome Extensions page with Developer mode active and Load unpacked visible">
-          <strong>2. Activate Developer mode</strong>
-          <p>Turn Developer mode on. When it is active, Chrome shows the <strong>Load unpacked</strong> button.</p>
         </article>
 
-        <article class="screenshot-card">
+        <article class="setup-step">
+          <div class="step-copy">
+            <span class="step-number">3</span>
+            <h3>Load the extension folder</h3>
+            <p>Click <strong>Load unpacked</strong> and choose the extracted folder that contains <strong>manifest.json</strong>.</p>
+          </div>
           <img class="real-screenshot" src="/static/images/extension/load-unpacked-highlight.png" alt="Chrome Extensions page with the Load unpacked button highlighted">
-          <strong>3. Load the extension folder</strong>
-          <p>Click Load unpacked and choose the extracted folder that contains manifest.json.</p>
         </article>
 
-        <article class="screenshot-card screenshot-compact">
-          <img class="real-screenshot" src="/static/images/extension/find-extension-icon.png" alt="Chrome toolbar with the Extensions icon highlighted">
-          <strong>4. Find the extension menu</strong>
-          <p>Click the Extensions icon in Chrome's toolbar to find installed extensions.</p>
+        <article class="setup-step setup-step-split">
+          <div class="step-copy">
+            <span class="step-number">4</span>
+            <h3>Find the extension menu</h3>
+            <p>Click the Extensions icon in Chrome's toolbar to find installed extensions.</p>
+          </div>
+          <img class="real-screenshot compact-shot" src="/static/images/extension/find-extension-icon.png" alt="Chrome toolbar with the Extensions icon highlighted">
         </article>
 
-        <article class="screenshot-card screenshot-compact">
-          <img class="real-screenshot" src="/static/images/extension/pin-extension-highlight.png" alt="Chrome Extensions menu with Instagram Scraper highlighted and pin icon circled">
-          <strong>5. Pin Instagram Scraper</strong>
-          <p>Find Instagram Scraper in the menu, then click the pin icon so it stays visible in Chrome.</p>
+        <article class="setup-step setup-step-split">
+          <div class="step-copy">
+            <span class="step-number">5</span>
+            <h3>Pin Instagram Scraper</h3>
+            <p>Find Instagram Scraper in the menu, then click the pin icon so it stays visible in Chrome.</p>
+          </div>
+          <img class="real-screenshot menu-shot" src="/static/images/extension/pin-extension-highlight.png" alt="Chrome Extensions menu with Instagram Scraper highlighted and pin icon circled">
         </article>
 
-        <article class="screenshot-card">
+        <article class="setup-step">
+          <div class="step-copy">
+            <span class="step-number">6</span>
+            <h3>Extract all metadata, or choose a date range</h3>
+            <p>This step is optional. To collect all metadata, open any Instagram account and click <strong>Extract Posts</strong>. To collect only a specific period, choose the date range first, then extract or download.</p>
+          </div>
           <img class="real-screenshot" src="/static/images/extension/extension-popup-date-range.png" alt="Instagram Scraper popup with date range fields and action buttons highlighted">
-          <strong>6. Choose a date range</strong>
-          <p>Open an Instagram profile, choose dates, then extract data or download media from that period.</p>
         </article>
 
-        <article class="screenshot-card screenshot-compact">
-          <img class="real-screenshot" src="/static/images/extension/instagram-profile-select-search.png" alt="Instagram profile with Select button and Description Search area highlighted">
-          <strong>7. Select content and search captions</strong>
-          <p>Use Select to choose profile content for download. Use Description Search to search words inside Instagram profile captions.</p>
+        <article class="setup-step setup-step-split">
+          <div class="step-copy">
+            <span class="step-number">7</span>
+            <h3>Select content and search captions</h3>
+            <p>Use <strong>Select</strong> to choose profile content for download. The second bar, <strong>Description Search</strong>, searches words inside Instagram profile captions.</p>
+          </div>
+          <img class="real-screenshot menu-shot" src="/static/images/extension/instagram-profile-select-search.png" alt="Instagram profile with Select button and Description Search area highlighted">
         </article>
       </div>
     </section>
