@@ -34,6 +34,14 @@ TOOLS = [
         "icon": "V",
         "class": "video",
     },
+    {
+        "path": "/tools/instagram-extension/",
+        "platform": "Chrome Extension",
+        "title": "Extension Instagram",
+        "description": "Install the Instagram scraper extension and learn what it can extract or download.",
+        "icon": "E",
+        "class": "extension",
+    },
 ]
 
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
@@ -46,6 +54,11 @@ app.mount("/tools/video-transcription", video_transcription_app, name="video_tra
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     return templates.TemplateResponse(request, "home.html", {"tools": TOOLS})
+
+
+@app.get("/tools/instagram-extension/", response_class=HTMLResponse)
+async def instagram_extension(request: Request):
+    return templates.TemplateResponse(request, "instagram_extension.html")
 
 
 @app.get("/health")

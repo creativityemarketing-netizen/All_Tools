@@ -187,6 +187,10 @@ body {
   background: var(--green);
 }
 
+.extension .tool-icon {
+  background: #7c3aed;
+}
+
 .tool-content {
   min-width: 0;
   display: flex;
@@ -269,5 +273,124 @@ body {
 
   .tool-card strong {
     font-size: 20px;
+  }
+}
+
+.extension-shell {
+  width: min(1080px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 54px 0 76px;
+}
+
+.extension-hero {
+  max-width: 760px;
+  margin-bottom: 32px;
+}
+
+.extension-hero h1 {
+  margin: 0;
+  font-size: clamp(38px, 6vw, 64px);
+  line-height: 1.04;
+}
+
+.extension-hero p:last-of-type {
+  max-width: 640px;
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.download-button {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+  padding: 0 20px;
+  border-radius: 8px;
+  background: var(--red);
+  color: #fff;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.download-button:hover {
+  background: var(--red-dark);
+}
+
+.extension-section {
+  margin-top: 22px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.extension-section h2 {
+  margin: 0 0 18px;
+  font-size: 26px;
+}
+
+.extension-section p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.feature-grid article {
+  min-height: 138px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fafbff;
+}
+
+.feature-grid strong {
+  font-size: 17px;
+}
+
+.feature-grid span {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.setup-list {
+  margin: 0;
+  padding-left: 24px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.setup-list strong {
+  color: var(--text);
+}
+
+@media (max-width: 900px) {
+  .feature-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .extension-section {
+    padding: 22px;
   }
 }

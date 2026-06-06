@@ -8,3 +8,4 @@ runtime-test/
 .env.*
 
 *.zip
+!static/downloads/*.zip
