@@ -390,6 +390,20 @@ body {
   gap: 12px;
 }
 
+.screenshot-wide {
+  grid-column: 1 / -1;
+}
+
+.real-screenshot {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #cfd7e6;
+  border-radius: 8px;
+  background: #202124;
+  box-shadow: 0 12px 28px rgba(16, 24, 40, 0.12);
+}
+
 .screenshot-card > strong {
   font-size: 18px;
 }
