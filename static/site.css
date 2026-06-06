@@ -404,6 +404,12 @@ body {
   box-shadow: 0 12px 28px rgba(16, 24, 40, 0.12);
 }
 
+.screenshot-compact .real-screenshot {
+  width: auto;
+  max-width: 100%;
+  justify-self: start;
+}
+
 .screenshot-card > strong {
   font-size: 18px;
 }
