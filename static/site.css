@@ -340,6 +340,10 @@ body {
   line-height: 1.65;
 }
 
+.final-download .download-button {
+  margin-top: 18px;
+}
+
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -410,6 +414,33 @@ body {
   justify-content: start;
 }
 
+.setup-step-search {
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: 44px;
+  align-items: center;
+}
+
+.setup-step-search .step-copy h3 {
+  font-size: 25px;
+  line-height: 1.25;
+}
+
+.setup-step-search .step-copy p {
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.setup-step-search .step-points {
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.setup-step-search .step7-shot {
+  justify-self: end;
+  margin-left: 0;
+  margin-right: 72px;
+}
+
 .step-copy {
   min-width: 0;
 }
@@ -437,6 +468,18 @@ body {
   color: var(--muted);
   font-size: 15px;
   line-height: 1.55;
+}
+
+.step-points {
+  margin: 10px 0 0;
+  padding-left: 20px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.step-points li + li {
+  margin-top: 6px;
 }
 
 .step-copy strong {
@@ -469,6 +512,12 @@ body {
   .setup-step-split {
     grid-template-columns: 1fr;
     justify-content: stretch;
+  }
+
+  .setup-step-search .step7-shot {
+    justify-self: start;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .extension-section {

@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.wsgi import WSGIMiddleware
@@ -34,6 +34,14 @@ TOOLS = [
         "icon": "V",
         "class": "video",
     },
+    {
+        "path": "/tools/instagram-extension/",
+        "platform": "Chrome Extension",
+        "title": "Extension Instagram",
+        "description": "Install the Instagram scraper extension and learn what it can extract or download.",
+        "icon": "E",
+        "class": "extension",
+    },
 ]
 
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
@@ -51,6 +59,24 @@ async def home(request: Request):
 @app.get("/tools/instagram-extension/", response_class=HTMLResponse)
 async def instagram_extension(request: Request):
     return templates.TemplateResponse(request, "instagram_extension.html")
+
+
+@app.get("/downloads/instagram-scraper-extension.zip")
+async def download_instagram_extension():
+    return FileResponse(
+        BASE_DIR / "static" / "downloads" / "instagram-extension.zip",
+        media_type="application/zip",
+        filename="instagram-scraper-extension.zip",
+    )
+
+
+@app.get("/downloads/instagram-extension.zip")
+async def download_instagram_extension_legacy():
+    return FileResponse(
+        BASE_DIR / "static" / "downloads" / "instagram-extension.zip",
+        media_type="application/zip",
+        filename="instagram-extension.zip",
+    )
 
 
 @app.get("/health")

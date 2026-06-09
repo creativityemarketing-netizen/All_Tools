@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Extension Instagram</title>
-  <link rel="stylesheet" href="/static/site.css">
+  <link rel="stylesheet" href="/static/site.css?v=step7-layout-2">
 </head>
 <body>
   <header class="site-header">
@@ -15,6 +15,7 @@
     <nav class="top-nav" aria-label="Tools">
       <a href="/tools/instagram-date/">Post Date Finder</a>
       <a href="/tools/video-transcription/">Video Transcription</a>
+      <a href="/tools/instagram-extension/">Extension Instagram</a>
     </nav>
   </header>
 
@@ -23,41 +24,30 @@
       <p class="eyebrow">Instagram Chrome Extension</p>
       <h1>Extension Instagram</h1>
       <p>Extract Instagram profile data, filter posts by date range, export metadata, and download Instagram media directly from Chrome.</p>
-      <a class="download-button" href="/static/downloads/instagram-extension.zip" download>
-        Download Extension ZIP
-      </a>
     </section>
 
     <section class="extension-section">
       <h2>What The Extension Can Do</h2>
       <div class="feature-grid">
         <article>
-          <strong>Instagram extraction</strong>
-          <span>Collect post and reel metadata from Instagram profiles, including captions, dates, likes, comments, media type, and post links.</span>
+          <strong>Extract public profile data</strong>
+          <span>Extract information from any public Instagram account and save it as an Excel/CSV file. The export includes platform, account, post ID, post URL, caption, published date, media type, likes, comments, media URL, thumbnail URL, and thumbnail.</span>
         </article>
         <article>
-          <strong>Date range extraction</strong>
-          <span>Choose a start date and end date before extraction so the extension collects only Instagram posts and reels published inside that date range.</span>
+          <strong>Extract by date range</strong>
+          <span>Choose a start date and end date, then extract only the Instagram posts and reels published inside that selected period.</span>
         </article>
         <article>
-          <strong>Export data</strong>
-          <span>Export extracted profile results into spreadsheet-friendly files for research, reporting, and content analysis.</span>
+          <strong>Download all or filtered media</strong>
+          <span>Download all Instagram profile content, or choose a date range and download only the content published during that period. Downloads can be saved as files in a folder or packaged as a ZIP.</span>
         </article>
         <article>
-          <strong>Date range downloads</strong>
-          <span>Use the same date range filter for downloads, so images, videos, and reels can be saved only from the selected period.</span>
+          <strong>Select posts and reels manually</strong>
+          <span>Select publications directly from the feed page or reels page, then download only the selected posts or reels.</span>
         </article>
         <article>
-          <strong>Caption search</strong>
-          <span>Search inside collected Instagram captions and filter profile results by words or date ranges.</span>
-        </article>
-        <article>
-          <strong>Instagram only</strong>
-          <span>This extension page and download are intended for Instagram workflows only, including Instagram posts, reels, profile metadata, and media downloads.</span>
-        </article>
-        <article>
-          <strong>Runs inside Chrome</strong>
-          <span>Install it as an unpacked Chrome extension and use it from the extension popup while browsing Instagram profiles.</span>
+          <strong>Search words in descriptions</strong>
+          <span>Search inside an Instagram profile using one word or multiple words from post descriptions and captions.</span>
         </article>
       </div>
     </section>
@@ -72,7 +62,7 @@
         <li>Click <strong>Load unpacked</strong>.</li>
         <li>Select the extracted extension folder, the folder that contains <strong>manifest.json</strong>.</li>
         <li>Open an Instagram profile, then click the extension icon from Chrome's toolbar.</li>
-        <li>Choose the date range you want, then extract or download only the Instagram posts and reels from that period.</li>
+        <li>Choose what you want to do: extract profile data, use a date range, download media, select specific posts, or search inside descriptions.</li>
       </ol>
     </section>
 
@@ -121,7 +111,7 @@
             <h3>Pin Instagram Scraper</h3>
             <p>Find Instagram Scraper in the menu. To pin the extension in Chrome, click the pin icon shown in the circle.</p>
           </div>
-          <img class="real-screenshot menu-shot pin-shot" src="/static/images/extension/pin-extension-highlight.png?v=pin-step-final" width="313" height="390" style="width:313px;max-width:100%;height:auto;" alt="Chrome Extensions menu with Instagram Scraper highlighted and pin icon circled">
+          <img class="real-screenshot menu-shot pin-shot" src="/static/images/extension/pin-extension-highlight.png?v=pin-step-exact" width="319" height="386" style="width:319px;max-width:100%;height:auto;" alt="Chrome Extensions menu with Instagram Scraper highlighted and pin icon circled">
         </article>
 
         <article class="setup-step">
@@ -133,20 +123,28 @@
           <img class="real-screenshot" src="/static/images/extension/extension-popup-date-range.png" alt="Instagram Scraper popup with date range fields and action buttons highlighted">
         </article>
 
-        <article class="setup-step setup-step-split">
+        <article class="setup-step setup-step-split setup-step-search">
           <div class="step-copy">
             <span class="step-number">7</span>
             <h3>Select content and search captions</h3>
-            <p>Use <strong>Select</strong> to choose profile content for download. The second bar, <strong>Description Search</strong>, searches words inside Instagram profile captions.</p>
+            <p>Use this panel on an Instagram profile when you want to select specific content or search captions.</p>
+            <ol class="step-points">
+              <li><strong>Select:</strong> choose publications from the profile, feed, or reels page before downloading.</li>
+              <li><strong>Description Search:</strong> open or close the caption search panel.</li>
+              <li><strong>Search descriptions:</strong> type one or more words, then click Search to find matching captions.</li>
+            </ol>
           </div>
-          <img class="real-screenshot menu-shot" src="/static/images/extension/instagram-profile-select-search.png" alt="Instagram profile with Select button and Description Search area highlighted">
+          <img class="real-screenshot menu-shot step7-shot" src="/static/images/extension/instagram-profile-select-search.png" alt="Instagram profile with Select button and Description Search area highlighted">
         </article>
       </div>
     </section>
 
-    <section class="extension-section">
-      <h2>Safety Check</h2>
-      <p>The public ZIP was cleaned before publishing. Local development files were removed, including Claude settings, local batch scripts, local server files, and placeholder environment files. No real API keys or real Instagram session cookies were found in the reviewed package.</p>
+    <section class="extension-section final-download">
+      <h2>Download The Extension</h2>
+      <p>After reading the setup steps, download the ZIP file, extract it on your computer, then load the extracted extension folder in Chrome.</p>
+      <a class="download-button" href="/downloads/instagram-scraper-extension.zip" download="instagram-scraper-extension.zip" type="application/zip">
+        Download Extension ZIP
+      </a>
     </section>
   </main>
 </body>
