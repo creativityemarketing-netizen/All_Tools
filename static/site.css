@@ -191,6 +191,10 @@ body {
   background: #7c3aed;
 }
 
+.tiktok-link .tool-icon {
+  background: #0f766e;
+}
+
 .tool-content {
   min-width: 0;
   display: flex;
