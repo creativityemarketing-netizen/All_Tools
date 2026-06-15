@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TikTok Extension</title>
+  <link rel="stylesheet" href="/static/site.css?v=tiktok-extension-2">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/">
+      <span class="brand-mark">CS</span>
+      <span>Creativity Solutions</span>
+    </a>
+    <nav class="top-nav" aria-label="Tools">
+      <a href="/tools/instagram-date/">Post Date Finder</a>
+      <a href="/tools/video-transcription/">Video Transcription</a>
+      <a href="/tools/instagram-extension/">Extension Instagram</a>
+      <a href="/tools/tiktok-extension/">TikTok Extension</a>
+    </nav>
+  </header>
+
+  <main class="extension-shell">
+    <section class="extension-hero">
+      <p class="eyebrow">TikTok Chrome Extension</p>
+      <h1>TikTok Extension</h1>
+      <p>Use TikGrab to collect public TikTok profile video data, filter results, export spreadsheets, and search words inside TikTok descriptions directly from Chrome.</p>
+    </section>
+
+    <section class="extension-section">
+      <h2>What The Extension Can Do</h2>
+      <div class="feature-grid">
+        <article>
+          <strong>Fetch videos from a profile</strong>
+          <span>Open a TikTok profile, then collect videos from that account with metadata such as title, date, duration, views, likes, and thumbnail.</span>
+        </article>
+        <article>
+          <strong>Filter the profile results</strong>
+          <span>Limit the scan by date range, minimum or maximum duration, keywords in titles or descriptions, and maximum number of videos.</span>
+        </article>
+        <article>
+          <strong>Select and review videos</strong>
+          <span>Select all videos or only specific videos, then open selected TikTok posts in the browser for manual review.</span>
+        </article>
+        <article>
+          <strong>Export and search descriptions</strong>
+          <span>Export bulk or search results as CSV, Excel, or JSON, and search TikTok descriptions by one word or multiple words.</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="extension-section">
+      <h2>How To Install It In Chrome</h2>
+      <ol class="setup-list">
+        <li>Click <strong>Download Extension ZIP</strong> at the bottom of this page and save the file on your computer.</li>
+        <li>Right-click the ZIP file and choose <strong>Extract All</strong>.</li>
+        <li>Open Chrome and go to <strong>chrome://extensions</strong>.</li>
+        <li>Turn on <strong>Developer mode</strong> in the top-right corner.</li>
+        <li>Click <strong>Load unpacked</strong>.</li>
+        <li>Select the extracted <strong>tikgrab-extension</strong> folder, the folder that contains <strong>manifest.json</strong>.</li>
+        <li>Open a TikTok profile tab, then click the TikGrab extension icon from Chrome's toolbar.</li>
+        <li>Choose what you want to do: fetch profile videos, filter results, export data, open selected posts, or search descriptions.</li>
+      </ol>
+    </section>
+
+    <section class="extension-section">
+      <h2>Visual Setup Steps</h2>
+      <div class="setup-flow">
+        <article class="setup-step">
+          <div class="step-copy">
+            <span class="step-number">1</span>
+            <h3>Check Developer mode</h3>
+            <p>Open <strong>chrome://extensions</strong>. If Developer mode is inactive, the switch in the top-right corner is grey.</p>
+          </div>
+          <img class="real-screenshot" src="/static/images/extension/developer-mode-off.png" alt="Chrome Extensions page with Developer mode disabled">
+        </article>
+
+        <article class="setup-step">
+          <div class="step-copy">
+            <span class="step-number">2</span>
+            <h3>Activate Developer mode</h3>
+            <p>Turn Developer mode on. When it is active, Chrome shows the <strong>Load unpacked</strong> button.</p>
+          </div>
+          <img class="real-screenshot" src="/static/images/extension/developer-mode-on.png" alt="Chrome Extensions page with Developer mode enabled">
+        </article>
+
+        <article class="setup-step">
+          <div class="step-copy">
+            <span class="step-number">3</span>
+            <h3>Load the extension folder</h3>
+            <p>Click <strong>Load unpacked</strong> and choose the extracted <strong>tikgrab-extension</strong> folder that contains <strong>manifest.json</strong>.</p>
+          </div>
+          <img class="real-screenshot" src="/static/images/extension/load-unpacked-highlight.png" alt="Chrome Extensions page with Load unpacked highlighted">
+        </article>
+
+        <article class="setup-step setup-step-split">
+          <div class="step-copy">
+            <span class="step-number">4</span>
+            <h3>Find TikGrab in Chrome</h3>
+            <p>Click the Extensions icon in Chrome's toolbar, find <strong>TikGrab</strong>, and use the pin icon if you want it to stay visible.</p>
+          </div>
+          <img class="real-screenshot compact-shot" src="/static/images/extension/find-extension-icon.png" alt="Chrome toolbar with the Extensions icon highlighted">
+        </article>
+
+        <article class="setup-step">
+          <div class="step-copy">
+            <span class="step-number">5</span>
+            <h3>Open a TikTok profile and fetch videos</h3>
+            <p>Open the TikTok profile you want to collect, then open TikGrab. In the <strong>Bulk</strong> tab, confirm the detected profile and click <strong>Fetch Videos</strong>.</p>
+          </div>
+          <img class="real-screenshot" src="/static/images/extension/tikgrab-bulk.png?v=1" alt="TikGrab Bulk tab with profile detection and Fetch Videos controls">
+        </article>
+
+        <article class="setup-step">
+          <div class="step-copy">
+            <span class="step-number">6</span>
+            <h3>Filter, select, and export results</h3>
+            <p>Open <strong>Filters</strong> to choose a date range or maximum number of videos. After fetching, select all videos or specific rows, open selected posts, or export the metadata as <strong>CSV</strong>, <strong>Excel</strong>, or <strong>JSON</strong>.</p>
+          </div>
+        </article>
+
+        <article class="setup-step">
+          <div class="step-copy">
+            <span class="step-number">7</span>
+            <h3>Search words in descriptions</h3>
+            <p>Open the <strong>Search</strong> tab, enter one word or several words, choose whether all words must match, and click <strong>Search Descriptions</strong>. Matching results can also be exported as CSV, Excel, or JSON.</p>
+          </div>
+          <img class="real-screenshot" src="/static/images/extension/tikgrab-search.png?v=1" alt="TikGrab Search tab with description search and export controls">
+        </article>
+      </div>
+    </section>
+
+    <section class="extension-section final-download">
+      <h2>Download The Extension</h2>
+      <p>After reading the setup steps, download the ZIP file, extract it on your computer, then load the extracted <strong>tikgrab-extension</strong> folder in Chrome.</p>
+      <a class="download-button" href="/downloads/tiktok-extension.zip" download="tiktok-extension.zip" type="application/zip">
+        Download Extension ZIP
+      </a>
+    </section>
+  </main>
+</body>
+</html>

@@ -54,6 +54,14 @@ TOOLS = [
         "class": "extension",
     },
     {
+        "path": "/tools/tiktok-extension/",
+        "platform": "Chrome Extension",
+        "title": "TikTok Extension",
+        "description": "Install TikGrab to download TikTok videos, export profile data, and search descriptions.",
+        "icon": "T",
+        "class": "tiktok",
+    },
+    {
         "path": "/tools/tiktok-id-link/",
         "platform": "TikTok",
         "title": "TikTok ID to Link",
@@ -78,6 +86,11 @@ async def home(request: Request):
 @app.get("/tools/instagram-extension/", response_class=HTMLResponse)
 async def instagram_extension(request: Request):
     return templates.TemplateResponse(request, "instagram_extension.html")
+
+
+@app.get("/tools/tiktok-extension/", response_class=HTMLResponse)
+async def tiktok_extension(request: Request):
+    return templates.TemplateResponse(request, "tiktok_extension.html")
 
 
 @app.get("/tools/tiktok-id-link/", response_class=HTMLResponse)
@@ -178,6 +191,15 @@ async def download_instagram_extension_legacy():
         BASE_DIR / "static" / "downloads" / "instagram-extension.zip",
         media_type="application/zip",
         filename="instagram-extension.zip",
+    )
+
+
+@app.get("/downloads/tiktok-extension.zip")
+async def download_tiktok_extension():
+    return FileResponse(
+        BASE_DIR / "static" / "downloads" / "tiktok-extension.zip",
+        media_type="application/zip",
+        filename="tiktok-extension.zip",
     )
 
 
