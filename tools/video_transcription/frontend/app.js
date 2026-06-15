@@ -98,9 +98,12 @@ function formatShortTime(seconds) {
 
 function estimateSeconds(durationSeconds = 0) {
   const duration = Number(durationSeconds || 0);
-  const diarizationExtra = speakerSeparation.checked ? 12 : 6;
-  if (!duration) return speakerSeparation.checked ? 45 : 30;
-  return Math.max(12, Math.round(duration * 0.28 + diarizationExtra));
+  if (speakerSeparation.checked) {
+    if (!duration) return 120;
+    return Math.max(75, Math.round(duration * 0.75 + 45));
+  }
+  if (!duration) return 30;
+  return Math.max(12, Math.round(duration * 0.28 + 6));
 }
 
 function startTimer(message, durationSeconds = 0) {
@@ -439,8 +442,8 @@ cleanFillers.addEventListener("change", () => {
 speakerSeparation.addEventListener("change", () => {
   processNote.hidden = false;
   processNote.textContent = speakerSeparation.checked
-    ? "Speaker separation uses OpenAI cloud transcription and requires API billing."
-    : "Local transcription mode is active.";
+    ? "Speaker separation is slower and usually takes 1-3 minutes. Turn it off for a faster transcript."
+    : "Fast transcription is active. Speaker labels will not be included.";
 });
 
 copyBtn.addEventListener("click", async () => {
