@@ -190,11 +190,27 @@ async def download_video(url: str) -> tuple[Path, Path]:
     job_dir.mkdir(parents=True, exist_ok=True)
     await run_command(
         "yt-dlp",
-        ["--no-playlist", "--max-filesize", "24M", "--format", "bestaudio/best", "--output", "%(id)s.%(ext)s", url],
+        [
+            "--no-playlist",
+            "--max-filesize",
+            "24M",
+            "--format",
+            "bestaudio[ext=m4a]/bestaudio/best[ext=mp4][vcodec^=h264][filesize<24M]/worst[ext=mp4][vcodec^=h264]/best",
+            "--output",
+            "%(id)s.%(ext)s",
+            url,
+        ],
         job_dir,
         timeout=180,
     )
-    media_file = next((file for file in job_dir.iterdir() if file.is_file() and not file.name.endswith((".part", ".ytdl"))), None)
+    media_file = next(
+        (
+            file
+            for file in job_dir.iterdir()
+            if file.is_file() and file.suffix.lower() in ALLOWED_UPLOADS
+        ),
+        None,
+    )
     if not media_file:
         raise HTTPException(status_code=422, detail="The video could not be downloaded. It may be private, blocked, or too large.")
     if media_file.stat().st_size > MAX_MEDIA_SIZE:
