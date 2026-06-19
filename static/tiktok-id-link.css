@@ -413,9 +413,32 @@ input::placeholder {
   text-overflow: ellipsis;
 }
 
+.publish-date {
+  display: flex;
+  width: fit-content;
+  gap: 9px;
+  align-items: center;
+  margin-top: 18px;
+  padding: 8px 10px;
+  border: 1px solid rgba(37, 244, 238, .18);
+  border-radius: 999px;
+  color: #bdbdc2;
+  background: rgba(37, 244, 238, .055);
+  font-size: 12px;
+}
+
+.publish-date span {
+  color: #76767c;
+}
+
+.publish-date strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
 .result-content h2 {
   display: -webkit-box;
-  margin: 24px 0 20px;
+  margin: 16px 0 20px;
   overflow: hidden;
   font-size: 18px;
   font-weight: 600;

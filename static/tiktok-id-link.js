@@ -56,6 +56,7 @@ copyButton.addEventListener("click", async () => {
 function showResult(data) {
   currentVideoUrl = data.video_url;
   document.querySelector("#result-id").textContent = `ID ${data.video_id}`;
+  document.querySelector("#published-at").textContent = formatDate(data.published_at);
   document.querySelector("#video-title").textContent = data.title || "TikTok publication";
   document.querySelector("#author-name").textContent = data.author_name || data.username;
   document.querySelector("#username").textContent = data.username ? `@${data.username}` : "Public profile";
@@ -76,4 +77,16 @@ function showResult(data) {
 function setLoading(loading) {
   submitButton.disabled = loading;
   submitLabel.textContent = loading ? "Finding..." : "Find links";
+}
+
+function formatDate(value) {
+  if (!value) {
+    return "Unknown date";
+  }
+
+  const date = new Date(value);
+  return new Intl.DateTimeFormat("en-US", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(date);
 }

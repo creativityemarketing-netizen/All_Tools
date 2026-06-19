@@ -1,4 +1,5 @@
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import quote, urlparse
 
@@ -167,6 +168,7 @@ async def tiktok_id_lookup(payload: TikTokLookupRequest):
 
     return {
         "video_id": video_id,
+        "published_at": datetime.fromtimestamp(int(video_id) >> 32, timezone.utc).isoformat(),
         "video_url": video_url,
         "profile_url": profile_url,
         "username": username,
