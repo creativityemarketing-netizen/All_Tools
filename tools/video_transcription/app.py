@@ -88,6 +88,14 @@ def request_headers_for(url: str, cookies: str = "") -> dict[str, str]:
     return headers
 
 
+def ytdlp_runtime_args() -> list[str]:
+    args = ["--js-runtimes", "node"]
+    cookies_file = os.getenv("YTDLP_COOKIES_FILE", "").strip()
+    if cookies_file:
+        args.extend(["--cookies", cookies_file])
+    return args
+
+
 async def run_command(command: str, args: list[str], cwd: Path, timeout: int = 240) -> tuple[str, str]:
     def _run() -> tuple[str, str]:
         completed = subprocess.run(
@@ -108,7 +116,20 @@ async def run_command(command: str, args: list[str], cwd: Path, timeout: int = 2
     except subprocess.TimeoutExpired as exc:
         raise HTTPException(status_code=504, detail="The operation took too long. Try a shorter video or upload the file directly.") from exc
     except RuntimeError as exc:
-        raise HTTPException(status_code=422, detail=str(exc)) from exc
+        message = str(exc)
+        lowered = message.lower()
+        if (
+            "sign in to confirm youâ€™re not a bot" in lowered
+            or "sign in to confirm you're not a bot" in lowered
+            or "cookies for the authentication" in lowered
+        ):
+            message = (
+                "YouTube requires verification for this video. Add a YouTube cookies.txt file "
+                "to the server, set YTDLP_COOKIES_FILE to its path, and restart the service."
+            )
+        elif "no supported javascript runtime" in lowered:
+            message = "YouTube extraction requires Node.js. Install Node.js on the server and restart the service."
+        raise HTTPException(status_code=422, detail=message) from exc
 
 
 def compact_number(value: Any) -> str:
@@ -176,7 +197,14 @@ async def get_media_info(url: str) -> dict[str, Any]:
     try:
         stdout, _ = await run_command(
             "yt-dlp",
-            ["--no-playlist", "--skip-download", "--dump-single-json", "--no-write-comments", url],
+            [
+                *ytdlp_runtime_args(),
+                "--no-playlist",
+                "--skip-download",
+                "--dump-single-json",
+                "--no-write-comments",
+                url,
+            ],
             BASE_DIR,
             timeout=90,
         )
@@ -191,6 +219,7 @@ async def download_video(url: str) -> tuple[Path, Path]:
     await run_command(
         "yt-dlp",
         [
+            *ytdlp_runtime_args(),
             "--no-playlist",
             "--max-filesize",
             "24M",
@@ -259,10 +288,10 @@ def format_segments(transcription: Any) -> list[dict[str, Any]]:
     return formatted
 
 
-async def transcribe_locally(file_path: Path, language: str | None, speed: str | None) -> dict[str, Any]:
+async def transcribe_locally(file_path: Path, language: str | None, speed: str | None, diarize: bool = False) -> dict[str, Any]:
     stdout, _ = await run_command(
         sys.executable,
-        ["transcribe_local.py", str(file_path), language or "Auto detect", speed or "balanced"],
+        ["transcribe_local.py", str(file_path), language or "Auto detect", speed or "balanced", "true" if diarize else "false"],
         BASE_DIR,
         timeout=720 if speed == "accurate" else 420,
     )
@@ -306,9 +335,9 @@ async def transcribe_with_openai(file_path: Path, language: str | None, diarize:
 
 async def transcribe_file(file_path: Path, language: str | None, speed: str | None, diarize: bool = False) -> dict[str, Any]:
     provider = os.getenv("TRANSCRIPTION_PROVIDER", "local").lower()
-    if diarize or provider != "local":
+    if provider != "local":
         return await transcribe_with_openai(file_path, language, diarize)
-    return await transcribe_locally(file_path, language, speed)
+    return await transcribe_locally(file_path, language, speed, diarize)
 
 
 def clean_media_info(info: dict[str, Any]) -> dict[str, Any]:

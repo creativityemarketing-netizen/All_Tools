@@ -329,7 +329,7 @@ async function generateTranscript(event) {
     mediaPreview.classList.remove("loading");
     platformEl.textContent = `Preview loaded from ${detectSource(url)}`;
     setWaitingTranscript("Preview loaded. Transcription is running now...");
-    startTimer(speakerSeparation.checked ? "Separating speakers with OpenAI." : "Transcribing with OpenAI.", infoPayload.info?.durationSeconds);
+    startTimer(speakerSeparation.checked ? "Separating speakers." : "Transcribing media.", infoPayload.info?.durationSeconds);
 
     const response = await fetch("api/transcribe", {
       method: "POST",
@@ -363,7 +363,7 @@ async function generateUploadTranscript() {
 
   const localUrl = URL.createObjectURL(file);
   const localMeta = await readLocalVideoMetadata(file);
-  startTimer("Transcribing uploaded file.", localMeta.durationSeconds);
+  startTimer(speakerSeparation.checked ? "Separating speakers in uploaded file." : "Transcribing uploaded file.", localMeta.durationSeconds);
   updateMediaInfo({
     title: file.name,
     description: "Uploaded local file",
