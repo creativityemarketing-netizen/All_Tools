@@ -12,7 +12,7 @@ from typing import Any
 from urllib.parse import quote
 
 import httpx
-from fastapi import FastAPI, File, HTTPException, Request, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 
@@ -383,7 +383,7 @@ async def api_transcribe(request: Request):
 
 
 @app.post("/api/transcribe-upload")
-async def api_transcribe_upload(media: UploadFile = File(...), language: str = "Auto detect", speed: str = "balanced", diarize: str = "false"):
+async def api_transcribe_upload(media: UploadFile = File(...), language: str = Form("Auto detect"), speed: str = Form("balanced"), diarize: str = Form("false")):
     suffix = Path(media.filename or "").suffix.lower()
     if suffix not in ALLOWED_UPLOADS:
         raise HTTPException(status_code=400, detail="Use MP3, MP4, MPEG, MPGA, M4A, WAV, or WEBM media.")
