@@ -18,8 +18,10 @@ from tools.video_transcription.app import app as video_transcription_app
 
 
 BASE_DIR = Path(__file__).parent
-TIKTOK_VIDEO_ID_PATTERN = re.compile(r"^\d{15,22}$")
-TIKTOK_VIDEO_URL_PATTERN = re.compile(r"/video/(\d{15,22})")
+TIKTOK_VIDEO_ID_PATTERN = re.compile(r"^\d{15,25}$")
+TIKTOK_VIDEO_URL_PATTERN = re.compile(r"/video/(\d{15,25})")
+TIKTOK_QUERY_ID_PATTERN = re.compile(r"(?:item_id|video_id|id)=(\d{15,25})")
+TIKTOK_LOOSE_ID_PATTERN = re.compile(r"\b\d{15,25}\b")
 
 app = FastAPI(title="Creativity Solutions")
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
@@ -104,10 +106,42 @@ def extract_tiktok_video_id(value: str) -> str | None:
     if TIKTOK_VIDEO_ID_PATTERN.fullmatch(value):
         return value
     try:
-        match = TIKTOK_VIDEO_URL_PATTERN.search(urlparse(value).path)
+        parsed = urlparse(value)
+        match = TIKTOK_VIDEO_URL_PATTERN.search(parsed.path)
+        if match:
+            return match.group(1)
+        query_match = TIKTOK_QUERY_ID_PATTERN.search(parsed.query)
+        if query_match:
+            return query_match.group(1)
     except ValueError:
-        return None
-    return match.group(1) if match else None
+        pass
+
+    loose_match = TIKTOK_LOOSE_ID_PATTERN.search(value)
+    return loose_match.group(0) if loose_match else None
+
+
+def decode_tiktok_publish_date(video_id: str) -> str:
+    return datetime.fromtimestamp(int(video_id) >> 32, timezone.utc).isoformat()
+
+
+def tiktok_fallback_result(
+    video_id: str,
+    message: str = "Date decoded from the TikTok ID.",
+) -> dict:
+    fallback_url = f"https://www.tiktok.com/@_/video/{video_id}"
+    return {
+        "status": "decoded",
+        "public_found": False,
+        "message": message,
+        "video_id": video_id,
+        "published_at": decode_tiktok_publish_date(video_id),
+        "video_url": fallback_url,
+        "profile_url": None,
+        "username": None,
+        "author_name": None,
+        "title": "TikTok publication date decoded from ID",
+        "thumbnail_url": None,
+    }
 
 
 @app.post("/api/tiktok-id-lookup")
@@ -132,28 +166,28 @@ async def tiktok_id_lookup(payload: TikTokLookupRequest):
         ) as client:
             response = await client.get(endpoint)
     except httpx.RequestError:
-        return JSONResponse(
-            {"error": "Could not reach TikTok. Please try again shortly."},
-            status_code=502,
+        return tiktok_fallback_result(
+            video_id,
+            "Could not reach TikTok. Date decoded from the ID.",
         )
 
     if response.status_code in (400, 404):
-        return JSONResponse(
-            {"error": "TikTok could not find a public video with this ID."},
-            status_code=404,
+        return tiktok_fallback_result(
+            video_id,
+            "TikTok did not return a public video. Date decoded from the ID.",
         )
     if response.status_code >= 400:
-        return JSONResponse(
-            {"error": "TikTok is temporarily unavailable. Please try again."},
-            status_code=502,
+        return tiktok_fallback_result(
+            video_id,
+            "TikTok is temporarily unavailable. Date decoded from the ID.",
         )
 
     try:
         data = response.json()
     except ValueError:
-        return JSONResponse(
-            {"error": "TikTok returned an invalid response. Please try again."},
-            status_code=502,
+        return tiktok_fallback_result(
+            video_id,
+            "TikTok returned an invalid response. Date decoded from the ID.",
         )
 
     profile_url = data.get("author_url") or ""
@@ -167,8 +201,11 @@ async def tiktok_id_lookup(payload: TikTokLookupRequest):
     )
 
     return {
+        "status": "public",
+        "public_found": True,
+        "message": "Public video found on TikTok.",
         "video_id": video_id,
-        "published_at": datetime.fromtimestamp(int(video_id) >> 32, timezone.utc).isoformat(),
+        "published_at": decode_tiktok_publish_date(video_id),
         "video_url": video_url,
         "profile_url": profile_url,
         "username": username,

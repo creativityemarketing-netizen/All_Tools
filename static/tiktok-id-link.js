@@ -5,13 +5,9 @@ const submitLabel = submitButton.querySelector("span");
 const result = document.querySelector("#result");
 const errorBox = document.querySelector("#error");
 const copyButton = document.querySelector("#copy-link");
+const foundBadge = document.querySelector("#found-badge");
 
 let currentVideoUrl = "";
-
-document.querySelector(".example").addEventListener("click", () => {
-  input.value = document.querySelector(".example").dataset.id;
-  input.focus();
-});
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -55,21 +51,39 @@ copyButton.addEventListener("click", async () => {
 
 function showResult(data) {
   currentVideoUrl = data.video_url;
+  const hasCreator = Boolean(data.username && data.profile_url);
+
+  foundBadge.innerHTML = data.public_found
+    ? "<i></i> Public video found"
+    : "<i></i> Date decoded from ID";
   document.querySelector("#result-id").textContent = `ID ${data.video_id}`;
   document.querySelector("#published-at").textContent = formatDate(data.published_at);
-  document.querySelector("#video-title").textContent = data.title || "TikTok publication";
-  document.querySelector("#author-name").textContent = data.author_name || data.username;
-  document.querySelector("#username").textContent = data.username ? `@${data.username}` : "Public profile";
-  document.querySelector("#avatar").textContent = (data.author_name || data.username || "?")[0].toUpperCase();
+  document.querySelector("#video-title").textContent = data.message || data.title || "TikTok publication";
+  document.querySelector("#author-name").textContent = hasCreator ? (data.author_name || data.username) : "Account unknown";
+  document.querySelector("#username").textContent = hasCreator ? `@${data.username}` : "Not available from ID only";
+  document.querySelector("#avatar").textContent = hasCreator ? (data.author_name || data.username)[0].toUpperCase() : "?";
 
   const thumbnail = document.querySelector("#thumbnail");
-  thumbnail.src = data.thumbnail_url || "";
-  thumbnail.alt = data.title ? `Thumbnail for ${data.title}` : "TikTok video thumbnail";
+  if (data.thumbnail_url) {
+    thumbnail.src = data.thumbnail_url;
+    thumbnail.alt = data.title ? `Thumbnail for ${data.title}` : "TikTok video thumbnail";
+  } else {
+    thumbnail.removeAttribute("src");
+    thumbnail.alt = "";
+  }
 
   const creatorLink = document.querySelector("#creator-link");
-  creatorLink.href = data.profile_url || data.video_url;
+  if (hasCreator) {
+    creatorLink.href = data.profile_url;
+    creatorLink.classList.remove("disabled");
+  } else {
+    creatorLink.removeAttribute("href");
+    creatorLink.classList.add("disabled");
+  }
 
-  document.querySelector("#video-link").href = data.video_url;
+  const videoLink = document.querySelector("#video-link");
+  videoLink.href = data.video_url;
+
   result.hidden = false;
   result.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
@@ -85,8 +99,5 @@ function formatDate(value) {
   }
 
   const date = new Date(value);
-  return new Intl.DateTimeFormat("en-US", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(date);
+  return date.toISOString().slice(0, 19).replace("T", " ") + " UTC";
 }

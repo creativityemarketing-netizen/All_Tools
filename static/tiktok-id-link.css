@@ -459,6 +459,23 @@ input::placeholder {
   text-decoration: none;
 }
 
+
+.creator.disabled {
+  cursor: default;
+  opacity: .72;
+  pointer-events: none;
+}
+
+.result-media:has(img:not([src])) {
+  background:
+    radial-gradient(circle at 35% 35%, rgba(37, 244, 238, .18), transparent 30%),
+    radial-gradient(circle at 65% 65%, rgba(254, 44, 85, .18), transparent 30%),
+    #111;
+}
+
+.result-media img:not([src]) {
+  display: none;
+}
 .creator:hover {
   border-color: #4c4c51;
 }
