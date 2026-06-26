@@ -85,39 +85,17 @@ button, a {
 }
 
 .brand-mark {
-  position: relative;
-  display: grid;
-  width: 30px;
-  height: 30px;
+  display: inline-grid;
+  width: 38px;
+  height: 38px;
   place-items: center;
-  border: 2px solid var(--ink);
-  border-radius: 9px;
-}
-
-.brand-mark::before, .brand-mark::after, .brand-mark span {
-  position: absolute;
-  width: 7px;
-  height: 14px;
-  content: "";
-  border: 2px solid currentColor;
-  border-top: 0;
-  border-right: 0;
-  border-radius: 0 0 0 5px;
-}
-
-.brand-mark::before {
-  color: var(--cyan);
-  transform: translate(-2px, 1px);
-}
-
-.brand-mark::after {
-  color: var(--pink);
-  transform: translate(2px, -1px);
-}
-
-.brand-mark span {
-  z-index: 1;
-  color: var(--ink);
+  border-radius: 8px;
+  color: #fff;
+  background: #e5322d;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0;
 }
 
 .status {
