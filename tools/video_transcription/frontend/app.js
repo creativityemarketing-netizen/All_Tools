@@ -25,6 +25,7 @@ const mediaId = document.querySelector("#mediaId");
 const sourceLink = document.querySelector("#sourceLink");
 const processNote = document.querySelector("#processNote");
 const toast = document.querySelector("#toast");
+const cookieAdminPanel = document.querySelector("#cookieAdminPanel");
 const cookieAdminForm = document.querySelector("#cookieAdminForm");
 const cookieAdminToken = document.querySelector("#cookieAdminToken");
 const cookieAdminFile = document.querySelector("#cookieAdminFile");
@@ -467,6 +468,12 @@ function downloadTranscript() {
 }
 
 form.addEventListener("submit", generateTranscript);
+const showCookieAdmin = new URLSearchParams(window.location.search).get("admin") === "cookies";
+if (showCookieAdmin && cookieAdminPanel) {
+  cookieAdminPanel.hidden = false;
+  refreshCookieStatus();
+}
+if (cookieAdminForm) cookieAdminForm.addEventListener("submit", uploadInstagramCookies);
 if (cookieAdminForm) cookieAdminForm.addEventListener("submit", uploadInstagramCookies);
 refreshCookieStatus();
 
