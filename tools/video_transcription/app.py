@@ -88,6 +88,27 @@ def request_headers_for(url: str, cookies: str = "") -> dict[str, str]:
     return headers
 
 
+def platform_name_for(url: str | None) -> str:
+    if not url:
+        return "This platform"
+    try:
+        host = httpx.URL(url).host or ""
+        host = host.removeprefix("www.")
+    except Exception:
+        return "This platform"
+    if "instagram" in host:
+        return "Instagram"
+    if "facebook" in host or "fb.watch" in host:
+        return "Facebook"
+    if "tiktok" in host:
+        return "TikTok"
+    if "youtube" in host or "youtu.be" in host:
+        return "YouTube"
+    if "twitter" in host or host == "x.com":
+        return "X"
+    return host or "This platform"
+
+
 def ytdlp_runtime_args() -> list[str]:
     args = ["--js-runtimes", "node"]
     cookies_file = os.getenv("YTDLP_COOKIES_FILE", "").strip()
@@ -96,7 +117,7 @@ def ytdlp_runtime_args() -> list[str]:
     return args
 
 
-async def run_command(command: str, args: list[str], cwd: Path, timeout: int = 240) -> tuple[str, str]:
+async def run_command(command: str, args: list[str], cwd: Path, timeout: int = 240, source_url: str | None = None) -> tuple[str, str]:
     def _run() -> tuple[str, str]:
         completed = subprocess.run(
             [command, *args],
@@ -118,14 +139,18 @@ async def run_command(command: str, args: list[str], cwd: Path, timeout: int = 2
     except RuntimeError as exc:
         message = str(exc)
         lowered = message.lower()
+        platform = platform_name_for(source_url)
         if (
             "sign in to confirm youâ€™re not a bot" in lowered
             or "sign in to confirm you're not a bot" in lowered
             or "cookies for the authentication" in lowered
+            or "login required" in lowered
+            or "please login" in lowered
         ):
             message = (
-                "YouTube requires verification for this video. Add a YouTube cookies.txt file "
-                "to the server, set YTDLP_COOKIES_FILE to its path, and restart the service."
+                f"{platform} requires login verification for this video. Add a valid {platform} cookies.txt file "
+                "to the server, set YTDLP_COOKIES_FILE to its path, and restart the service, "
+                "or upload the video file directly."
             )
         elif "no supported javascript runtime" in lowered:
             message = "YouTube extraction requires Node.js. Install Node.js on the server and restart the service."
@@ -207,6 +232,7 @@ async def get_media_info(url: str) -> dict[str, Any]:
             ],
             BASE_DIR,
             timeout=90,
+            source_url=url,
         )
         return normalize_media_info(json.loads(stdout), url)
     except Exception:
@@ -231,6 +257,7 @@ async def download_video(url: str) -> tuple[Path, Path]:
         ],
         job_dir,
         timeout=180,
+        source_url=url,
     )
     media_file = next(
         (
