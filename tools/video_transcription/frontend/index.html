@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=cs-logo" />
+    <link rel="stylesheet" href="styles.css?v=ig-cookies" />
   </head>
   <body>
     <header class="site-header">
@@ -68,6 +68,22 @@
           </div>
       </section>
 
+      <details class="admin-cookies">
+        <summary>Admin Instagram cookies</summary>
+        <form id="cookieAdminForm" class="cookie-admin-form" aria-label="Upload Instagram cookies">
+          <label>
+            Admin token
+            <input id="cookieAdminToken" type="password" autocomplete="off" placeholder="YTDLP_COOKIES_ADMIN_TOKEN" />
+          </label>
+          <label>
+            Instagram cookies.txt
+            <input id="cookieAdminFile" type="file" accept=".txt,text/plain" />
+          </label>
+          <button type="submit">Save cookies</button>
+        </form>
+        <p id="cookieAdminStatus" class="cookie-admin-status">Checking cookie status...</p>
+      </details>
+
       <section class="tool-panel" id="toolPanel" aria-live="polite">
         <div class="tool-header">
           <div>
@@ -125,6 +141,6 @@
     </main>
 
     <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
-    <script src="app.js"></script>
+    <script src="app.js?v=ig-cookies"></script>
   </body>
 </html>

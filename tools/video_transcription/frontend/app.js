@@ -25,6 +25,10 @@ const mediaId = document.querySelector("#mediaId");
 const sourceLink = document.querySelector("#sourceLink");
 const processNote = document.querySelector("#processNote");
 const toast = document.querySelector("#toast");
+const cookieAdminForm = document.querySelector("#cookieAdminForm");
+const cookieAdminToken = document.querySelector("#cookieAdminToken");
+const cookieAdminFile = document.querySelector("#cookieAdminFile");
+const cookieAdminStatus = document.querySelector("#cookieAdminStatus");
 
 let transcriptText = "";
 let transcriptSegments = [];
@@ -286,6 +290,44 @@ function updateMediaInfo(info = {}) {
   mediaPreview.append(fallback);
 }
 
+async function refreshCookieStatus() {
+  if (!cookieAdminStatus) return;
+  try {
+    const response = await fetch("api/admin/cookies");
+    const payload = await readResponsePayload(response);
+    if (!response.ok) throw new Error(payload.detail || "Cookie status unavailable.");
+    if (!payload.enabled) {
+      cookieAdminStatus.textContent = "Cookie upload disabled. Set YTDLP_COOKIES_ADMIN_TOKEN on Render first.";
+      return;
+    }
+    cookieAdminStatus.textContent = payload.installed
+      ? "Instagram cookies are installed on the server. Link transcription will use them automatically."
+      : "No Instagram cookies installed yet.";
+  } catch (error) {
+    cookieAdminStatus.textContent = error.message;
+  }
+}
+
+async function uploadInstagramCookies(event) {
+  event.preventDefault();
+  if (!cookieAdminFile?.files?.length) {
+    cookieAdminStatus.textContent = "Choose an Instagram cookies.txt file first.";
+    return;
+  }
+  const body = new FormData();
+  body.append("token", cookieAdminToken.value.trim());
+  body.append("cookies", cookieAdminFile.files[0]);
+  cookieAdminStatus.textContent = "Uploading cookies...";
+  try {
+    const response = await fetch("api/admin/cookies", { method: "POST", body });
+    const payload = await readResponsePayload(response);
+    if (!response.ok) throw new Error(payload.detail || "Cookie upload failed.");
+    cookieAdminStatus.textContent = "Instagram cookies saved. New transcriptions will use them automatically.";
+    cookieAdminFile.value = "";
+  } catch (error) {
+    cookieAdminStatus.textContent = error.message;
+  }
+}
 function updateTranscript(payload, sourceLabel) {
   transcriptText = payload.text || "";
   transcriptSegments = Array.isArray(payload.segments) ? payload.segments : [];
@@ -425,6 +467,8 @@ function downloadTranscript() {
 }
 
 form.addEventListener("submit", generateTranscript);
+if (cookieAdminForm) cookieAdminForm.addEventListener("submit", uploadInstagramCookies);
+refreshCookieStatus();
 
 format.addEventListener("change", () => {
   updateDownloadLabel();

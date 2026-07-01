@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+import secrets
 import shutil
 import subprocess
 import sys
@@ -24,8 +25,12 @@ FRONTEND_DIR = BASE_DIR / "frontend"
 TMP_DIR = tool_data_dir("video_transcription") / "tmp"
 UPLOAD_DIR = TMP_DIR / "uploads"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+COOKIE_DIR = tool_data_dir("video_transcription") / "cookies"
+COOKIE_DIR.mkdir(parents=True, exist_ok=True)
+MANAGED_COOKIES_FILE = COOKIE_DIR / "instagram-cookies.txt"
 
 MAX_MEDIA_SIZE = 25 * 1024 * 1024
+MAX_COOKIES_SIZE = 1024 * 1024
 ALLOWED_UPLOADS = {".mp3", ".mp4", ".mpeg", ".mpga", ".m4a", ".wav", ".webm"}
 
 app = FastAPI(title="Video Transcription")
@@ -112,6 +117,8 @@ def platform_name_for(url: str | None) -> str:
 def ytdlp_runtime_args() -> list[str]:
     args = ["--js-runtimes", "node"]
     cookies_file = os.getenv("YTDLP_COOKIES_FILE", "").strip()
+    if not cookies_file and MANAGED_COOKIES_FILE.exists():
+        cookies_file = str(MANAGED_COOKIES_FILE)
     if cookies_file:
         args.extend(["--cookies", cookies_file])
     return args
@@ -372,6 +379,45 @@ def clean_media_info(info: dict[str, Any]) -> dict[str, Any]:
     cleaned.pop("downloadUrl", None)
     cleaned.pop("downloadCookies", None)
     return cleaned
+
+
+
+def cookie_upload_enabled() -> bool:
+    return bool(os.getenv("YTDLP_COOKIES_ADMIN_TOKEN", "").strip())
+
+
+def verify_cookie_admin_token(token: str) -> None:
+    expected = os.getenv("YTDLP_COOKIES_ADMIN_TOKEN", "").strip()
+    if not expected:
+        raise HTTPException(status_code=403, detail="Cookie upload is disabled. Set YTDLP_COOKIES_ADMIN_TOKEN on the server first.")
+    if not secrets.compare_digest(token or "", expected):
+        raise HTTPException(status_code=403, detail="Invalid admin token.")
+
+
+def validate_instagram_cookies(content: bytes) -> None:
+    if len(content) > MAX_COOKIES_SIZE:
+        raise HTTPException(status_code=413, detail="cookies.txt is larger than 1MB.")
+    text = content.decode("utf-8", errors="ignore").lower()
+    if "instagram.com" not in text:
+        raise HTTPException(status_code=400, detail="This cookies.txt file does not contain Instagram cookies.")
+    if "sessionid" not in text:
+        raise HTTPException(status_code=400, detail="This cookies.txt file does not include an Instagram sessionid cookie. Export cookies from a logged-in Instagram browser session.")
+
+
+@app.get("/api/admin/cookies")
+async def api_cookie_status():
+    return {"enabled": cookie_upload_enabled(), "installed": MANAGED_COOKIES_FILE.exists()}
+
+
+@app.post("/api/admin/cookies")
+async def api_upload_cookies(cookies: UploadFile = File(...), token: str = Form("")):
+    verify_cookie_admin_token(token)
+    content = await cookies.read(MAX_COOKIES_SIZE + 1)
+    validate_instagram_cookies(content)
+    temp_path = MANAGED_COOKIES_FILE.with_suffix(".tmp")
+    temp_path.write_bytes(content)
+    temp_path.replace(MANAGED_COOKIES_FILE)
+    return {"ok": True, "installed": True}
 
 
 @app.post("/api/media-info")

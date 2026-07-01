@@ -137,6 +137,7 @@ SOCIAL_TOOLS_DATA_DIR=/var/data/social-tools
 INSTAGRAM_REQUEST_TIMEOUT=18
 INSTAGRAM_CACHE_TTL=86400
 TIKTOK_CACHE_TTL=86400
+YTDLP_COOKIES_ADMIN_TOKEN=choose-a-long-private-admin-token
 ```
 
 Meaning:
@@ -145,6 +146,13 @@ Meaning:
 - `INSTAGRAM_REQUEST_TIMEOUT`: Instagram request timeout in seconds
 - `INSTAGRAM_CACHE_TTL`: Instagram cache lifetime, `86400` = 24 hours
 - `TIKTOK_CACHE_TTL`: TikTok cache lifetime, `86400` = 24 hours
+- `YTDLP_COOKIES_ADMIN_TOKEN`: private token used by the Video Transcription admin panel to upload Instagram cookies to the persistent disk. Do not share this token with public users.
+
+## Instagram cookies for Video Transcription
+
+If Instagram links start requiring login, export a logged-in Instagram `cookies.txt` file in Netscape format. Open the Video Transcription page, expand `Admin Instagram cookies`, enter `YTDLP_COOKIES_ADMIN_TOKEN`, choose the `cookies.txt` file, and click `Save cookies`.
+
+The uploaded file is stored on the persistent disk under `SOCIAL_TOOLS_DATA_DIR` and is used automatically by `yt-dlp` for future link transcriptions. Do not commit cookies to GitHub.
 
 ## Step 5: Deploy
 
@@ -263,6 +271,7 @@ SOCIAL_TOOLS_DATA_DIR=/var/data/social-tools
 INSTAGRAM_REQUEST_TIMEOUT=18
 INSTAGRAM_CACHE_TTL=86400
 TIKTOK_CACHE_TTL=86400
+YTDLP_COOKIES_ADMIN_TOKEN=choose-a-long-private-admin-token
 ```
 
 If only one tool fails, test each route:
@@ -357,3 +366,4 @@ Then open:
 ```text
 http://127.0.0.1:8000/
 ```
+
