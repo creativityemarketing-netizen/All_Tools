@@ -376,7 +376,7 @@ async def transcribe_with_openai(file_path: Path, language: str | None, diarize:
         if code:
             request["language"] = code
         prompt = transcription_prompt(language)
-        if prompt:
+        if prompt and not diarize:
             request["prompt"] = prompt
         try:
             transcription = client.audio.transcriptions.create(**request)
