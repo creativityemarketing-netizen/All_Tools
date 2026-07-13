@@ -372,10 +372,27 @@ async def transcribe_with_openai(file_path: Path, language: str | None, diarize:
     return await asyncio.to_thread(_transcribe)
 
 
+def should_fallback_to_local(exc: HTTPException) -> bool:
+    detail = str(exc.detail).lower()
+    return (
+        "insufficient_quota" in detail
+        or "error code: 429" in detail
+        or "rate limit" in detail
+        or "quota" in detail
+    )
+
+
 async def transcribe_file(file_path: Path, language: str | None, speed: str | None, diarize: bool = False) -> dict[str, Any]:
     provider = os.getenv("TRANSCRIPTION_PROVIDER", "local").lower()
     if provider != "local":
-        return await transcribe_with_openai(file_path, language, diarize)
+        try:
+            return await transcribe_with_openai(file_path, language, diarize)
+        except HTTPException as exc:
+            if os.getenv("OPENAI_FALLBACK_TO_LOCAL", "true").lower() in ("1", "true", "yes") and should_fallback_to_local(exc):
+                result = await transcribe_locally(file_path, language, speed, diarize)
+                result["providerFallback"] = "openai-quota-to-local"
+                return result
+            raise
     return await transcribe_locally(file_path, language, speed, diarize)
 
 
