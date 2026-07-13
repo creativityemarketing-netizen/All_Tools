@@ -406,8 +406,9 @@ async def transcribe_file(file_path: Path, language: str | None, speed: str | No
             return await transcribe_with_openai(file_path, language, diarize)
         except HTTPException as exc:
             if os.getenv("OPENAI_FALLBACK_TO_LOCAL", "true").lower() in ("1", "true", "yes") and should_fallback_to_local(exc):
-                fallback_speed = os.getenv("OPENAI_FALLBACK_LOCAL_SPEED", "balanced")
-                result = await transcribe_locally(file_path, language, fallback_speed, diarize)
+                fallback_speed = os.getenv("OPENAI_FALLBACK_LOCAL_SPEED", "fast")
+                fallback_diarize = os.getenv("OPENAI_FALLBACK_LOCAL_DIARIZE", "false").lower() in ("1", "true", "yes")
+                result = await transcribe_locally(file_path, language, fallback_speed, fallback_diarize)
                 result["providerFallback"] = "openai-quota-to-local"
                 return result
             raise

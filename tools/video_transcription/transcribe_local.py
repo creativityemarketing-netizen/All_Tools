@@ -267,8 +267,10 @@ def main():
     speed = sys.argv[3] if len(sys.argv) > 3 else "balanced"
     diarize = len(sys.argv) > 4 and sys.argv[4].lower() in ("true", "1", "yes", "diarize")
     language_code = normalize_language(language)
-    if speed in ("fast", "balanced"):
-        model_name = os.getenv("LOCAL_WHISPER_FAST_EN_MODEL" if language_code == "en" else "LOCAL_WHISPER_FAST_MODEL", "small")
+    if speed == "fast":
+        model_name = os.getenv("LOCAL_WHISPER_FAST_EN_MODEL" if language_code == "en" else "LOCAL_WHISPER_FAST_MODEL", "tiny")
+    elif speed == "balanced":
+        model_name = os.getenv("LOCAL_WHISPER_BALANCED_EN_MODEL" if language_code == "en" else "LOCAL_WHISPER_BALANCED_MODEL", "small")
     else:
         model_name = os.getenv("LOCAL_WHISPER_EN_MODEL" if language_code == "en" else "LOCAL_WHISPER_MODEL", "small")
 
