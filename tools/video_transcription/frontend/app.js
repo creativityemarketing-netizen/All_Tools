@@ -387,7 +387,7 @@ async function generateTranscript(event) {
     const response = await fetch("api/transcribe", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ url, language: language.value, speed: "accurate", diarize: speakerSeparation.checked })
+    body: JSON.stringify({ url, language: language.value, speed: "balanced", diarize: speakerSeparation.checked })
     });
     const payload = await readResponsePayload(response);
     if (!response.ok) throw new Error(payload.error || payload.detail || "Transcription failed.");
@@ -441,7 +441,7 @@ async function generateUploadTranscript() {
     const body = new FormData();
     body.append("media", file);
     body.append("language", language.value);
-    body.append("speed", "accurate");
+    body.append("speed", "balanced");
     body.append("diarize", speakerSeparation.checked ? "true" : "false");
 
     const response = await fetch("api/transcribe-upload", {

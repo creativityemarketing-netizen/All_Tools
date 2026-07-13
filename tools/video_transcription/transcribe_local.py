@@ -260,9 +260,9 @@ def main():
     diarize = len(sys.argv) > 4 and sys.argv[4].lower() in ("true", "1", "yes", "diarize")
     language_code = normalize_language(language)
     if speed in ("fast", "balanced"):
-        model_name = os.getenv("LOCAL_WHISPER_FAST_EN_MODEL" if language_code == "en" else "LOCAL_WHISPER_FAST_MODEL", "small")
+        model_name = os.getenv("LOCAL_WHISPER_FAST_EN_MODEL" if language_code == "en" else "LOCAL_WHISPER_FAST_MODEL", "base")
     else:
-        model_name = os.getenv("LOCAL_WHISPER_EN_MODEL" if language_code == "en" else "LOCAL_WHISPER_MODEL", "medium")
+        model_name = os.getenv("LOCAL_WHISPER_EN_MODEL" if language_code == "en" else "LOCAL_WHISPER_MODEL", "base")
 
     beam_size = 2 if speed == "fast" else 4 if speed == "balanced" else 5
     best_of = 2 if speed == "fast" else 4 if speed == "balanced" else 5
