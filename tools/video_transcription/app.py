@@ -35,6 +35,16 @@ ALLOWED_UPLOADS = {".mp3", ".mp4", ".mpeg", ".mpga", ".m4a", ".wav", ".webm"}
 
 app = FastAPI(title="Video Transcription")
 
+HEBREW_TRANSCRIPTION_PROMPT = " ".join([
+    "This audio is in Modern Hebrew.",
+    "Transcribe the audio with maximum accuracy in grammatically correct Modern Hebrew.",
+    "Correct obvious speech recognition mistakes using surrounding context.",
+    "Prefer valid Hebrew words over phonetically similar invalid words.",
+    "Preserve exact meaning, names, numbers, abbreviations, and technical terms.",
+    "Restore punctuation and sentence boundaries naturally.",
+    "Do not translate, summarize, paraphrase, censor, or invent words.",
+    "If a word is unintelligible, output [לא ברור].",
+])
 LANGUAGE_CODES = {
     "Arabic": "ar",
     "Chinese": "zh",
@@ -64,6 +74,10 @@ def language_code(language: str | None) -> str | None:
     if not language or language == "Auto detect":
         return None
     return LANGUAGE_CODES.get(language, language.lower()[:2])
+
+
+def transcription_prompt(language: str | None) -> str | None:
+    return HEBREW_TRANSCRIPTION_PROMPT if language_code(language) == "he" else None
 
 
 def referer_for(url: str) -> str | None:
@@ -361,6 +375,9 @@ async def transcribe_with_openai(file_path: Path, language: str | None, diarize:
         code = language_code(language)
         if code:
             request["language"] = code
+        prompt = transcription_prompt(language)
+        if prompt:
+            request["prompt"] = prompt
         try:
             transcription = client.audio.transcriptions.create(**request)
         except Exception as exc:

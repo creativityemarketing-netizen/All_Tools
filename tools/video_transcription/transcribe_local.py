@@ -7,6 +7,14 @@ import numpy as np
 from faster_whisper import WhisperModel
 
 
+HEBREW_INITIAL_PROMPT = " ".join([
+    "This audio is in Modern Hebrew.",
+    "Transcribe in grammatically correct Modern Hebrew with natural punctuation.",
+    "Prefer valid Hebrew words over phonetically similar invalid words.",
+    "Preserve names, numbers, abbreviations, and technical terms.",
+    "Do not translate, summarize, paraphrase, censor, or invent words.",
+    "Use [לא ברור] for unintelligible words.",
+])
 LANGUAGE_CODES = {
     "arabic": "ar",
     "chinese": "zh",
@@ -260,9 +268,9 @@ def main():
     diarize = len(sys.argv) > 4 and sys.argv[4].lower() in ("true", "1", "yes", "diarize")
     language_code = normalize_language(language)
     if speed in ("fast", "balanced"):
-        model_name = os.getenv("LOCAL_WHISPER_FAST_EN_MODEL" if language_code == "en" else "LOCAL_WHISPER_FAST_MODEL", "base")
+        model_name = os.getenv("LOCAL_WHISPER_FAST_EN_MODEL" if language_code == "en" else "LOCAL_WHISPER_FAST_MODEL", "small")
     else:
-        model_name = os.getenv("LOCAL_WHISPER_EN_MODEL" if language_code == "en" else "LOCAL_WHISPER_MODEL", "base")
+        model_name = os.getenv("LOCAL_WHISPER_EN_MODEL" if language_code == "en" else "LOCAL_WHISPER_MODEL", "small")
 
     beam_size = 2 if speed == "fast" else 4 if speed == "balanced" else 5
     best_of = 2 if speed == "fast" else 4 if speed == "balanced" else 5
@@ -280,6 +288,8 @@ def main():
     }
     if language_code:
         transcribe_options["language"] = language_code
+    if language_code == "he":
+        transcribe_options["initial_prompt"] = HEBREW_INITIAL_PROMPT
 
     segments, info = model.transcribe(media_file, **transcribe_options)
     detected_language = language_code or getattr(info, "language", None)
