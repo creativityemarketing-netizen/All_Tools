@@ -338,13 +338,23 @@ function updateTranscript(payload, sourceLabel) {
   statusEl.textContent = "Complete";
 }
 
+function htmlErrorMessage(response, text) {
+  const preview = text.slice(0, 1200).toLowerCase();
+  const isHtml = preview.includes("<!doctype html") || preview.includes("<html");
+  if (!isHtml) return text || `Request failed with status ${response.status}`;
+  if (response.status === 502) {
+    return "Render returned 502 Bad Gateway while transcribing. The server likely restarted or ran out of memory. Try again with a shorter video, or wait for the latest fallback fix to finish deploying.";
+  }
+  return `The server returned an HTML error page instead of a transcript. Status ${response.status}.`;
+}
+
 async function readResponsePayload(response) {
   const contentType = response.headers.get("content-type") || "";
   if (contentType.includes("application/json")) {
     return response.json();
   }
   const text = await response.text();
-  return { detail: text || `Request failed with status ${response.status}` };
+  return { detail: htmlErrorMessage(response, text) };
 }
 
 async function generateTranscript(event) {
@@ -456,9 +466,18 @@ async function generateUploadTranscript() {
 }
 
 function downloadTranscript() {
+  const exportText = output.value || renderTranscript();
+  if (!transcriptText || statusEl.textContent === "Error") {
+    showToast("There is no successful transcript to export yet.", "error");
+    return;
+  }
+  if (/^\s*<!doctype html/i.test(exportText) || /^\s*<html/i.test(exportText)) {
+    showToast("The server returned an error page, not a transcript.", "error");
+    return;
+  }
   const extension = format.value === "txt" ? "txt" : format.value;
   const mime = format.value === "txt" ? "text/plain" : "text/vtt";
-  const blob = new Blob([output.value || renderTranscript()], { type: `${mime};charset=utf-8` });
+  const blob = new Blob([exportText], { type: `${mime};charset=utf-8` });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
