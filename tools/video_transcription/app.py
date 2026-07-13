@@ -406,9 +406,17 @@ async def transcribe_file(file_path: Path, language: str | None, speed: str | No
             return await transcribe_with_openai(file_path, language, diarize)
         except HTTPException as exc:
             if os.getenv("OPENAI_FALLBACK_TO_LOCAL", "true").lower() in ("1", "true", "yes") and should_fallback_to_local(exc):
+                if diarize and os.getenv("ALLOW_LOCAL_SPEAKER_FALLBACK", "false").lower() not in ("1", "true", "yes"):
+                    raise HTTPException(
+                        status_code=422,
+                        detail=(
+                            "Reliable speaker separation requires the OpenAI transcription provider. "
+                            "The OpenAI account currently has no quota, and local speaker separation on Render can produce unreliable Hebrew. "
+                            "Add OpenAI credits or disable speaker separation for a local fallback transcript."
+                        ),
+                    ) from exc
                 fallback_speed = os.getenv("OPENAI_FALLBACK_LOCAL_SPEED", "fast")
-                fallback_diarize = diarize or os.getenv("OPENAI_FALLBACK_LOCAL_DIARIZE", "false").lower() in ("1", "true", "yes")
-                result = await transcribe_locally(file_path, language, fallback_speed, fallback_diarize)
+                result = await transcribe_locally(file_path, language, fallback_speed, False)
                 result["providerFallback"] = "openai-quota-to-local"
                 return result
             raise
