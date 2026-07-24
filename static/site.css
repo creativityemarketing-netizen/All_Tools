@@ -187,6 +187,25 @@ body {
   background: var(--green);
 }
 
+
+.youtube .tool-icon {
+  position: relative;
+  overflow: hidden;
+  background: #ff0000;
+  color: transparent;
+  font-size: 0;
+}
+
+.youtube .tool-icon::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 18px solid #fff;
+  transform: translateX(2px);
+}
+
 .extension .tool-icon {
   background: #7c3aed;
 }
