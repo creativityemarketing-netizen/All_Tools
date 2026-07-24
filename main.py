@@ -15,6 +15,7 @@ from tools.instagram_date.app import app as instagram_date_app
 from tools.instagram_words.app import app as instagram_words_app
 from tools.tiktok.app import app as tiktok_app
 from tools.video_transcription.app import app as video_transcription_app
+from tools.youtube.app import app as youtube_app
 
 
 BASE_DIR = Path(__file__).parent
@@ -49,6 +50,14 @@ TOOLS = [
         "class": "video",
     },
     {
+        "path": "/tools/youtube/",
+        "platform": "YouTube",
+        "title": "YouTube Channel Exporter",
+        "description": "Export channel videos, shorts, dates, links, and engagement into an Excel workbook.",
+        "icon": "Y",
+        "class": "youtube",
+    },
+    {
         "path": "/tools/instagram-extension/",
         "platform": "Chrome Extension",
         "title": "Extension Instagram",
@@ -79,6 +88,7 @@ app.mount("/tools/instagram-date", WSGIMiddleware(instagram_date_app), name="ins
 app.mount("/tools/instagram-words", WSGIMiddleware(instagram_words_app), name="instagram_words")
 app.mount("/tools/tiktok", tiktok_app, name="tiktok")
 app.mount("/tools/video-transcription", video_transcription_app, name="video_transcription")
+app.mount("/tools/youtube", youtube_app, name="youtube")
 
 
 @app.get("/", response_class=HTMLResponse)

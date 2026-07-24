@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>YouTube Channel Exporter</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="workspace" aria-label="YouTube channel exporter">
+        <div class="panel intro">
+          <p class="eyebrow">YouTube to Excel</p>
+          <h1>Channel Exporter</h1>
+          <p class="summary">Paste a channel link and download a workbook with the channel content, dates, links, views, and video/short counts.</p>
+          <div class="stats-grid">
+            <div>
+              <span>Workbook</span>
+              <strong>.xlsx</strong>
+            </div>
+            <div>
+              <span>Content</span>
+              <strong>Videos + Shorts</strong>
+            </div>
+            <div>
+              <span>Runs</span>
+              <strong>Locally</strong>
+            </div>
+          </div>
+        </div>
+
+        <form id="exportForm" class="panel form-panel">
+          <label>
+            <span>Channel link</span>
+            <input id="channelUrl" name="channelUrl" type="url" placeholder="https://www.youtube.com/@channel" required>
+          </label>
+
+          <section id="channelPreview" class="channel-preview" hidden>
+            <div class="avatar-wrap">
+              <img id="channelAvatar" alt="" class="channel-avatar">
+            </div>
+            <div class="channel-copy">
+              <strong id="channelTitle">Channel</strong>
+              <span id="channelHandle"></span>
+              <p id="channelDescription"></p>
+            </div>
+          </section>
+
+          <label>
+            <span>Fetch limit</span>
+            <input id="limit" name="limit" type="number" min="1" step="1" placeholder="Leave empty for all videos and shorts">
+          </label>
+
+          <button id="submitButton" type="submit">
+            <span class="button-icon" aria-hidden="true">&darr;</span>
+            <span>Download Excel</span>
+          </button>
+
+          <section id="progressPanel" class="progress-panel" hidden>
+            <div class="progress-head">
+              <span id="progressLabel">Preparing</span>
+              <strong id="progressPercent">0%</strong>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+              <div id="progressFill" class="progress-fill"></div>
+            </div>
+          </section>
+
+          <p id="status" class="status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
+
